@@ -1,0 +1,48 @@
+{% extends 'base.html' %}
+{% block content %}
+<form method="get" action="{{ views.search}}">
+<input id="q" name="q" type="text" placeholder="Search...">
+</form>
+<table class="table table-bordered">
+  <thead>
+    <tr>
+      <th>First Name</th>
+      <th>Last Name</th>
+      <th>Department Name</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for employee in employees %}
+      <tr>
+        <td>{{ employee.firstname }}</td>
+        <td>{{ employee.lastname }}</td>
+        <td>{{ employee.departmentid }}</td>
+      </tr>
+    {% endfor %}
+  </tbody>
+</table>
+
+{% if employees.has_other_pages %}
+  <ul class="pagination">
+    {% if employees.has_previous %}
+      <li><a href="?page={{ employees.previous_page_number }}">&laquo;</a></li>
+    {% else %}
+      <li class="disabled"><span>&laquo;</span></li>
+    {% endif %}
+    {% for i in employees.paginator.page_range %}
+      {% if employees.number == i %}
+        <li class="active"><span>{{ i }} <span class="sr-only">(current)</span></span></li>
+      {% else %}
+        <li><a href="?page={{ i }}">{{ i }}</a></li>
+      {% endif %}
+    {% endfor %}
+    {% if employees.has_next %}
+      <li><a href="?page={{ employees.next_page_number }}">&raquo;</a></li>
+    {% else %}
+      <li class="disabled"><span>&raquo;</span></li>
+    {% endif %}
+  </ul>
+{% endif %}
+
+
+{% endblock content%}
